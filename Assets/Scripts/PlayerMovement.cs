@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-
+    [SerializeField] private CharacterController charController;
     [SerializeField] private InputAction leftMovementButton;
     [SerializeField] private InputAction rightMovementButton;
 
@@ -28,14 +28,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (leftMovementButton.IsPressed())
         {
-            transform.position += new Vector3(0, 0, -speed * Time.deltaTime);
+            charController.Move(Vector3.back * speed * Time.deltaTime);
             animator.SetBool("walkBackward", true);
             animator.SetBool("walkForward", false);
         }
 
         else if (rightMovementButton.IsPressed())
         {
-            transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+            charController.Move(Vector3.forward * speed * Time.deltaTime);
             animator.SetBool("walkBackward", false);
             animator.SetBool("walkForward", true);
         }

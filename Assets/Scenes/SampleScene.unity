@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 397942853}
   - component: {fileID: 397942852}
   - component: {fileID: 397942854}
+  - component: {fileID: 397942855}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -417,6 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   animator: {fileID: 1791214654}
+  charController: {fileID: 397942855}
   leftMovementButton:
     m_Name: Left Movement Button
     m_Type: 0
@@ -502,6 +504,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.7592893, z: 1}
   m_Center: {x: 0, y: 0.8463137, z: 0}
+--- !u!143 &397942855
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397942850}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
