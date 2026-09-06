@@ -3,14 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] Animator animator;
-    
+    [SerializeField] private Animator animator;
 
-    [SerializeField] InputAction leftMovementButton;
-    [SerializeField] InputAction rightMovementButton;
+    [SerializeField] private InputAction leftMovementButton;
+    [SerializeField] private InputAction rightMovementButton;
 
     [Header("Movement")]
-    [SerializeField] float speed;
+    [SerializeField] private float speed = 5;
 
 
     void Start()
@@ -34,17 +33,18 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("walkForward", false);
         }
 
-        if (rightMovementButton.IsPressed())
+        else if (rightMovementButton.IsPressed())
         {
             transform.position += new Vector3(0, 0, speed * Time.deltaTime);
             animator.SetBool("walkBackward", false);
             animator.SetBool("walkForward", true);
         }
 
-        if (leftMovementButton.WasReleasedThisFrame() || rightMovementButton.WasReleasedThisFrame())
+        else
         {
             animator.SetBool("walkBackward", false);
             animator.SetBool("walkForward", false);
         }
     }
+           
 }
