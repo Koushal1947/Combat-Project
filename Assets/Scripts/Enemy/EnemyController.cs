@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -7,7 +8,7 @@ public class EnemyController : MonoBehaviour
         Idle,
         Approach,
         Attack,
-
+        Recovery,
         Hitstun,
         Dead
     }
@@ -28,6 +29,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f;
 
 
+    [Header("Recovery")]
+    [SerializeField] private float recoveryTime = 0.6f;
+    private float recoveryTimer;
+
     private void Start()
     {
         currentState = EnemyState.Idle;
@@ -36,8 +41,6 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
 
-        
-
         if(currentState == EnemyState.Hitstun || currentState == EnemyState.Dead)
         {
             return;
@@ -45,19 +48,26 @@ public class EnemyController : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if(distanceToPlayer > detectionRange)
+        if (currentState == EnemyState.Idle ||
+            currentState == EnemyState.Approach ||
+            currentState == EnemyState.Attack)
         {
-            currentState = EnemyState.Idle;
-        }
-        else if(distanceToPlayer > attackRange)
-        {
-            currentState = EnemyState.Approach;
+            if (distanceToPlayer > detectionRange)
+            {
+                currentState = EnemyState.Idle;
+            }
+            else if (distanceToPlayer > attackRange)
+            {
+                currentState = EnemyState.Approach;
+            }
+
+            else
+            {
+                currentState = EnemyState.Attack;
+            }
         }
 
-        else
-        {
-            currentState = EnemyState.Attack;
-        }
+        
 
 
         switch (currentState)
@@ -72,6 +82,10 @@ public class EnemyController : MonoBehaviour
 
             case EnemyState.Attack:
                 HandleAttack();
+                break;
+
+            case EnemyState.Recovery:
+                HandleRecovery();
                 break;
 
             case EnemyState.Hitstun:
@@ -92,7 +106,6 @@ public class EnemyController : MonoBehaviour
 
     void HandleApproach()
     {
-        //move towards player
         animator.SetBool("walkForward", true);
         animator.SetBool("walkBackward", false);
 
@@ -115,6 +128,19 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
+    void HandleRecovery()
+    {
+        animator.SetBool("walkForward", false);
+        animator.SetBool("walkBackward", false);
+
+        recoveryTimer -= Time.deltaTime;
+
+        if(recoveryTimer <= 0)
+        {
+            currentState = EnemyState.Idle;
+        }
+    }
+
     void HandleHitstun()
     {
 
@@ -128,6 +154,8 @@ public class EnemyController : MonoBehaviour
     public void AttackFinished()
     {
         isAttacking = false;
+        currentState = EnemyState.Recovery;
+        recoveryTimer = recoveryTime;
     }
 
 }

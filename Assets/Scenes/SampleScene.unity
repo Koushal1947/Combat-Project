@@ -876,6 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad883aa6254eaa041996f36962535dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackController
+  enemyController: {fileID: 1118461097}
 --- !u!1 &1118461089
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,6 +958,7 @@ MonoBehaviour:
   moveSpeed: 1
   detectionRange: 5
   attackRange: 1.2
+  recoveryTime: 0.4
 --- !u!143 &1118461098
 CharacterController:
   m_ObjectHideFlags: 0
