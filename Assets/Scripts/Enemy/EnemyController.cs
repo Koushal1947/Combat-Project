@@ -41,11 +41,6 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
 
-        if(currentState == EnemyState.Hitstun || currentState == EnemyState.Dead)
-        {
-            return;
-        }
-
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (currentState == EnemyState.Idle ||
@@ -66,8 +61,6 @@ public class EnemyController : MonoBehaviour
                 currentState = EnemyState.Attack;
             }
         }
-
-        
 
 
         switch (currentState)
@@ -143,7 +136,8 @@ public class EnemyController : MonoBehaviour
 
     void HandleHitstun()
     {
-
+        animator.SetBool("walkForward", false);
+        animator.SetBool("walkBackward", false);
     }
 
     void HandleDead()
@@ -156,6 +150,17 @@ public class EnemyController : MonoBehaviour
         isAttacking = false;
         currentState = EnemyState.Recovery;
         recoveryTimer = recoveryTime;
+    }
+
+    public void EnterHitstun()
+    {
+        isAttacking = false;
+        currentState = EnemyState.Hitstun;
+    }
+
+    public void ExitHitstun()
+    {
+        currentState = EnemyState.Idle;
     }
 
 }

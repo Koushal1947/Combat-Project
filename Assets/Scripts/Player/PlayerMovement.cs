@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (jumpButton.WasPressedThisFrame() && charController.isGrounded)
         {
+            animator.SetTrigger("Jump");
             verticalVelocity = jumpForce;
         }
     }
