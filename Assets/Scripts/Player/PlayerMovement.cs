@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private PlayerCombat playerCombat;
     [SerializeField] private Animator animator;
     [SerializeField] private CharacterController charController;
     [SerializeField] private InputAction leftMovementButton;
@@ -29,42 +30,41 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
-        ProcessMovement();
-        ProcessJump();
-        
+        if (!playerCombat.IsAttacking)
+        {
+            ProcessMovement();
+            ProcessJump();
+        }
+
+        ApplyGravity();
     }
 
     private void ProcessMovement()
     {
+        float targetMoveAmount = 0f;
 
-        if(charController.isGrounded && verticalVelocity < 0)
-        {
-            verticalVelocity = -2f;
-        }
-
-        verticalVelocity += gravity * Time.deltaTime;
+       
 
         Vector3 movement = Vector3.zero;
 
         if (leftMovementButton.IsPressed())
         {
             movement = Vector3.back * speed;
-            animator.SetBool("walkBackward", true);
-            animator.SetBool("walkForward", false);
+            targetMoveAmount = -1f;
         }
 
         else if (rightMovementButton.IsPressed())
         {
             movement = Vector3.forward * speed;
-            animator.SetBool("walkBackward", false);
-            animator.SetBool("walkForward", true);
+            targetMoveAmount = 1f;
         }
 
         else
         {
-            animator.SetBool("walkBackward", false);
-            animator.SetBool("walkForward", false);
+            targetMoveAmount = 0f;
         }
+
+        animator.SetFloat("MoveAmount", targetMoveAmount, 0.1f, Time.deltaTime);
 
         movement.y = verticalVelocity;
 
@@ -81,5 +81,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    
+    void ApplyGravity()
+    {
+        if (charController.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
+
+        verticalVelocity += gravity * Time.deltaTime;
+
+        Vector3 gravityMovement = Vector3.up * verticalVelocity;
+
+        charController.Move(gravityMovement * Time.deltaTime);
+    }
 }

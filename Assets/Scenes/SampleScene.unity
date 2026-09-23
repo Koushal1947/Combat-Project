@@ -383,6 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb0eeeb6e25e0f498a65a1b69bc7557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  playerCombat: {fileID: 397942856}
   animator: {fileID: 1989636931}
   charController: {fileID: 397942855}
   leftMovementButton:
@@ -498,6 +499,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
     m_Priority: 0
+  charController: {fileID: 397942855}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,4 +20,14 @@ public class AttackController : MonoBehaviour
     {
         playerCombat.AttackFinished();
     }
+
+    public void OpenComboWindow()
+    {
+        playerCombat.OpenComboWindow();
+    }
+
+    public void CloseComboWindow()
+    {
+        playerCombat.CloseComboWindow();
+    }
 }
