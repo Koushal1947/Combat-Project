@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -273,13 +274,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00000008009375, y: -0.70710677, z: -0.00000013411046, w: 0.7071068}
-  m_LocalPosition: {x: 6, y: 1.3, z: 3.17}
+  m_LocalRotation: {x: 0.10247363, y: -0, z: -0, w: 0.9947357}
+  m_LocalPosition: {x: 1.38, y: 3.34, z: -5.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 9.568, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.763, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +325,26 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b54ee1d6fe7fd44b590dd8674f41c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonCamera
+  target: {fileID: 905221383}
+  playerMovement: {fileID: 397942852}
+  lockOnTarget: {fileID: 1118461093}
+  distance: 5
+  mouseSensitivity: 0.1
+  lockOnCameraSpeed: 5
+  lookSmoothSpeed: 1
+  cameraBias: 3
 --- !u!4 &369459656 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400108, guid: c1b3dfa6513051648a87476ced70583a, type: 3}
@@ -362,13 +383,14 @@ Transform:
   m_GameObject: {fileID: 397942850}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.35020733, z: 0, w: 0.9366723}
-  m_LocalPosition: {x: 0, y: 0, z: -8.4008425e-11}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1433992130}
   - {fileID: 911171026}
   - {fileID: 1062644181}
+  - {fileID: 905221383}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -41, z: 0}
 --- !u!114 &397942852
@@ -386,40 +408,74 @@ MonoBehaviour:
   playerCombat: {fileID: 397942856}
   animator: {fileID: 1989636931}
   charController: {fileID: 397942855}
-  leftMovementButton:
-    m_Name: Left Movement Button
+  cameraTransform: {fileID: 330585546}
+  lockOnTarget: {fileID: 1118461093}
+  lockOnButton:
+    m_Name: Lock On Button
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: dbc2e3b1-fec3-4fde-b1fb-dbe2d91c198d
+    m_Id: f0bd42d1-97d3-459e-a65e-e9cb975b030c
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 7bdb380e-c3ef-4c3d-a96e-0e790dd4cc16
+      m_Id: c362e8f9-0403-445d-98c3-8b4507883117
+      m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Lock On Button
+      m_Flags: 0
+    m_Flags: 0
+    m_Priority: 0
+  moveInput:
+    m_Name: Move Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b53e8ddd-f449-4fd4-a37e-a2d354a9a30a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 0534c3de-22d7-446b-a4ed-d792b5c997c2
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Input
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 9a81368a-17a4-4f5d-a950-de42f5b6c604
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Input
+      m_Flags: 8
+    - m_Name: down
+      m_Id: b0290057-3937-453d-9eeb-38ed4512548b
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Input
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 488c1282-bf92-408b-b0cd-40e6d3df45f5
       m_Path: <Keyboard>/a
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Left Movement Button
-      m_Flags: 0
-    m_Flags: 0
-    m_Priority: 0
-  rightMovementButton:
-    m_Name: Right Movement Button
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 183fe713-784a-400c-bedd-849886a31899
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: f5e62651-ea47-4381-ae26-e82fa5d4232b
+      m_Action: Move Input
+      m_Flags: 8
+    - m_Name: right
+      m_Id: fe78b1b1-552e-4054-a084-3fc8f0700ebc
       m_Path: <Keyboard>/d
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Right Movement Button
-      m_Flags: 0
+      m_Action: Move Input
+      m_Flags: 8
     m_Flags: 0
     m_Priority: 0
   jumpButton:
@@ -441,7 +497,9 @@ MonoBehaviour:
     m_Flags: 0
     m_Priority: 0
   gravity: -20
-  speed: 2
+  freeMoveSpeed: 9.5
+  lockOnMoveSpeed: 4
+  rotationSpeed: 17
   jumpForce: 8
 --- !u!143 &397942855
 CharacterController:
@@ -750,15 +808,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8465839044456209044, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -2.3478246
+      value: -2.3478768
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044456209044, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 6.9645605
+      value: 6.9645677
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044456209044, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -98.87015
+      value: -98.870155
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044456209112, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -879,6 +937,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &905221382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 905221383}
+  m_Layer: 0
+  m_Name: CameraTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &905221383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905221382}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 397942851}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &911171025
 GameObject:
@@ -1056,6 +1145,7 @@ MonoBehaviour:
   animator: {fileID: 369459657}
   player: {fileID: 397942851}
   moveSpeed: 1
+  rotationSpeed: 15
   detectionRange: 5
   attackRange: 1.2
   recoveryTime: 0.4

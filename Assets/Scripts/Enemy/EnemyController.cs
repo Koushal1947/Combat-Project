@@ -23,6 +23,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 15f;
 
     [Header("Ranges")]
     [SerializeField] private float detectionRange = 5f;
@@ -102,15 +103,19 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("walkForward", true);
         animator.SetBool("walkBackward", false);
 
-        float direction = Mathf.Sign(player.position.z - transform.position.z);
+        Vector3 direction = player.position - transform.position;
 
-        Vector3 movement = Vector3.forward * direction * moveSpeed;
+        direction.y = 0f;
+        direction.Normalize();
 
-        charController.Move(movement * Time.deltaTime);
+        FacePlayer();
+
+        charController.Move(direction * moveSpeed * Time.deltaTime);
     }
 
     void HandleAttack()
     {
+        FacePlayer();
 
         if (isAttacking)
         {
@@ -143,6 +148,21 @@ public class EnemyController : MonoBehaviour
     void HandleDead()
     {
 
+    }
+
+    private void FacePlayer()
+    {
+        Vector3 direction = player.position - transform.position;
+        direction.y = 0f;
+
+        direction.Normalize();
+
+        if (direction.sqrMagnitude > 0.01)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
+        }
     }
 
     public void AttackFinished()

@@ -19,7 +19,7 @@ public class PlayerCombat : MonoBehaviour
 
     void Start()
     {
-        attackButton.Enable();
+        //attackButton.Enable();
     }
 
     void Update()

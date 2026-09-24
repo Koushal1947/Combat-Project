@@ -1048,5 +1048,5 @@ AssetOrigin:
   productId: 230582
   packageName: Stylish Dual Blade Pack
   packageVersion: 1.0
-  assetPath: Assets/Grruzam_DualBlade_Animation/M_DualBlade/1_Movements/7__Jump/Inplace/Dual_Blade@Jump_ALL.FBX
+  assetPath: Assets/Animations/DualBlade  CharAnims/Dual_Blade@Jump_ALL.FBX
   uploadId: 521129

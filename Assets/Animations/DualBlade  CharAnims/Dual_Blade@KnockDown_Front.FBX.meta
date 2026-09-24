@@ -1048,5 +1048,5 @@ AssetOrigin:
   productId: 230582
   packageName: Stylish Dual Blade Pack
   packageVersion: 1.0
-  assetPath: Assets/Grruzam_DualBlade_Animation/M_DualBlade/4_Damages/5__KnockDown/Front/Dual_Blade@KnockDown_Front.FBX
+  assetPath: Assets/Animations/DualBlade  CharAnims/Dual_Blade@KnockDown_Front.FBX
   uploadId: 521129
