@@ -28,7 +28,6 @@ public class EnemyHealth : MonoBehaviour
             return;
         }
 
-        enemyReaction.PlayHitReaction();
     }
 
     

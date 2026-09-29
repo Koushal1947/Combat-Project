@@ -1,9 +1,16 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
 {
     [SerializeField] private BoxCollider hitboxCollider;
-    [SerializeField] private int damage = 20;
+    [SerializeField] private PlayerCombat playerCombat;
+    [SerializeField] private AttackController attackController;
+    [SerializeField] private EnemyReaction enemyReaction;
+    [SerializeField] private HitStopController hitstopController;
+
+    
 
     private void Awake()
     {
@@ -12,18 +19,41 @@ public class AttackHitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+
+        int damage = playerCombat.GetCurrentDamage();
+        float hitstun = playerCombat.GetCurrentHitstun();
+        float knockback = playerCombat.GetCurrentKnockback();
+        float hitstop = playerCombat.GetCurrentHitstop();
+        int comboStep = playerCombat.GetCurrentComboStep();
+
+        if (!other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy Hit!");
+            return;
         }
 
         EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
 
-        if(enemyHealth != null)
+        if(enemyHealth == null)
         {
-            enemyHealth.TakeDamage(damage);
+            return;
+        }
+
+        if (!attackController.TryRegisterHit(enemyHealth))
+        {
+            return;
         }
         
+
+        enemyHealth.TakeDamage(damage);
+
+
+        if(enemyReaction != null)
+        {
+            enemyReaction.PlayHitReaction(hitstun, knockback, transform.root, comboStep);
+        }
+
+        hitstopController.PlayHitstop(hitstop);
+
     }
     public void EnableHitbox()
     {
@@ -34,4 +64,7 @@ public class AttackHitbox : MonoBehaviour
     {
         hitboxCollider.enabled = false;
     }
+
+    
+
 }

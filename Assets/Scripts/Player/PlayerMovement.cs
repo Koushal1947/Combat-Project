@@ -20,11 +20,14 @@ public class PlayerMovement : MonoBehaviour
 
     private float verticalVelocity;
 
+    private Vector3 attackDirection;
+
     [Header("Movement")]
     [SerializeField] private float freeMoveSpeed = 5;
     [SerializeField] private float lockOnMoveSpeed = 4f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float jumpForce = 10;
+
 
     private bool isLockedOn;
 
@@ -45,10 +48,16 @@ public class PlayerMovement : MonoBehaviour
             ProcessMovement();
             ProcessJump();
         }
+        else if (playerCombat.AttackMovementActive)
+        {
+            ProcessAttackMovement();
+        }
 
         ProcessLockOn();
         ApplyGravity();
     }
+
+    
 
     private void ProcessMovement()
     {
@@ -88,6 +97,12 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Jump");
             verticalVelocity = jumpForce;
         }
+    }
+
+    private void ProcessAttackMovement()
+    {
+        float currentAttackMoveSpeed = playerCombat.GetCurrentMoveSpeed();
+        charController.Move(attackDirection * currentAttackMoveSpeed * Time.deltaTime);
     }
 
     void ProcessLockOn()
@@ -195,6 +210,27 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("MoveAmount", input.magnitude, 0.1f, Time.deltaTime);
 
         return moveDirection;
+    }
+
+    public void SetAttackDirection()
+    {
+        if(isLockedOn && lockOnTarget != null)
+        {
+            Vector3 direction = lockOnTarget.position - transform.position;
+            direction.y = 0;
+
+
+            if(direction.sqrMagnitude > 0.01f)
+            {
+                attackDirection = direction.normalized;
+
+                transform.rotation = Quaternion.LookRotation(attackDirection);
+            }
+        }
+        else
+        {
+            attackDirection = transform.forward;
+        }
     }
 
 }

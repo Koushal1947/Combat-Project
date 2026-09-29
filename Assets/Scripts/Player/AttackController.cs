@@ -1,19 +1,48 @@
-using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AttackController : MonoBehaviour
 {
-    [SerializeField] private AttackHitbox attackHitbox;
     [SerializeField] private PlayerCombat playerCombat;
+    [SerializeField] private AttackHitbox leftHitbox;
+    [SerializeField] private AttackHitbox rightHitbox;
 
-    public void EnableHitbox()
+    private HashSet<EnemyHealth> hitEnemies = new HashSet<EnemyHealth>();
+
+    public bool TryRegisterHit(EnemyHealth enemy)
     {
-        attackHitbox.EnableHitbox();
+        if (hitEnemies.Contains(enemy))
+        {
+            return false;
+        }
+
+        hitEnemies.Add(enemy);
+        return true;
     }
 
-    public void DisableHitbox()
+    public void ResetHitTargets()
     {
-        attackHitbox.DisableHitbox();
+        hitEnemies.Clear();
+    }
+
+    public void EnableLeftHitbox()
+    {
+        leftHitbox.EnableHitbox();
+    }
+
+    public void DisableLeftHitbox()
+    {
+        leftHitbox.DisableHitbox();
+    }
+
+    public void EnableRightHitbox()
+    {
+        rightHitbox.EnableHitbox();
+    }
+
+    public void DisableRightHitbox()
+    {
+        rightHitbox.DisableHitbox();
     }
 
     public void FinishAttack()
@@ -29,5 +58,15 @@ public class AttackController : MonoBehaviour
     public void CloseComboWindow()
     {
         playerCombat.CloseComboWindow();
+    }
+
+    public void StartAttackMovement()
+    {
+        playerCombat.StartAttackMovement();
+    }
+
+    public void StopAttackMovement()
+    {
+        playerCombat.StopAttackMovement();
     }
 }

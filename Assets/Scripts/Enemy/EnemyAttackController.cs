@@ -8,4 +8,9 @@ public class EnemyAttackController : MonoBehaviour
     {
         enemyController.AttackFinished();
     }
+
+    public void FinishKnockdown()
+    {
+        enemyController.ExitKnockdown();
+    }
 }

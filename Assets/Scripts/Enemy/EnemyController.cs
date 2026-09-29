@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class EnemyController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class EnemyController : MonoBehaviour
         Attack,
         Recovery,
         Hitstun,
+        Knockdown,
         Dead
     }
 
@@ -86,10 +88,15 @@ public class EnemyController : MonoBehaviour
                 HandleHitstun();
                 break;
 
+            case EnemyState.Knockdown:
+                HandleKnockdown();
+                break;
+
             case EnemyState.Dead:
                 HandleDead();
                 break;
         }
+
     }
 
     void HandleIdle()
@@ -143,6 +150,12 @@ public class EnemyController : MonoBehaviour
     {
         animator.SetBool("walkForward", false);
         animator.SetBool("walkBackward", false);
+
+    }
+
+    void HandleKnockdown()
+    {
+
     }
 
     void HandleDead()
@@ -152,6 +165,7 @@ public class EnemyController : MonoBehaviour
 
     private void FacePlayer()
     {
+
         Vector3 direction = player.position - transform.position;
         direction.y = 0f;
 
@@ -175,6 +189,9 @@ public class EnemyController : MonoBehaviour
     public void EnterHitstun()
     {
         isAttacking = false;
+
+        animator.ResetTrigger("Attack");
+
         currentState = EnemyState.Hitstun;
     }
 
@@ -183,4 +200,21 @@ public class EnemyController : MonoBehaviour
         currentState = EnemyState.Idle;
     }
 
+    public void MoveKnockback(Vector3 direction, float force)
+    {
+        charController.Move(direction * force * Time.deltaTime);
+    }
+
+    public void EnterKnockdown()
+    {
+        isAttacking = false;
+        animator.ResetTrigger("Attack");
+
+        currentState = EnemyState.Knockdown;
+    }
+
+    public void ExitKnockdown()
+    {
+        currentState = EnemyState.Idle;
+    }
 }
