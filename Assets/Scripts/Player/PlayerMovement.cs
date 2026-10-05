@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
             ProcessMovement();
             ProcessJump();
         }
-        else if (playerCombat.AttackMovementActive)
+        else if (playerCombat.AttackMovementActive && !playerCombat.CurrentAttackUsesRotation)
         {
             ProcessAttackMovement();
         }

@@ -11,16 +11,18 @@ public class EnemyReaction : MonoBehaviour
 
     public bool isInHitStun => isHitStun;
     
+    
 
-
-    public void PlayHitReaction(float hitStunTime, float knockbackForce, Transform attacker, int comboStep)
+    public void PlayHitReaction(float hitStunTime, float knockbackForce, Transform attacker, int comboStep, bool causesKnockdown, HitReactionType reactionType)
     {
+
+
         if(hitStunCoroutine != null)
         {
             StopCoroutine(hitStunCoroutine);
         }
 
-        if(comboStep == 3)
+        if(causesKnockdown)
         {
             enemyController.EnterKnockdown();
         }
@@ -29,11 +31,10 @@ public class EnemyReaction : MonoBehaviour
             enemyController.EnterHitstun();
         }
 
-        PlayReactionAnimation(comboStep);
+        PlayReactionAnimation(reactionType);
 
-        bool isKnockdown = comboStep == 3;
 
-        hitStunCoroutine = StartCoroutine(HitStun(hitStunTime,knockbackForce,attacker, isKnockdown));
+        hitStunCoroutine = StartCoroutine(HitStun(hitStunTime,knockbackForce,attacker, causesKnockdown));
     }
 
     private IEnumerator HitStun(float hitStunTime, float knockbackForce, Transform attacker, bool isKnockdown)
@@ -65,20 +66,22 @@ public class EnemyReaction : MonoBehaviour
         hitStunCoroutine = null;
     }
 
-    private void PlayReactionAnimation(int comboStep)
+    private void PlayReactionAnimation(HitReactionType reactionType)
     {
 
-        switch (comboStep)
+        switch (reactionType)
         {
-            case 1:
+            case HitReactionType.Light1:
                 animator.SetTrigger("Hit1");
                 break;
-            case 2:
+            case HitReactionType.Light2:
                 animator.SetTrigger("Hit2");
                 break;
-            case 3:
-                animator.SetTrigger("Hit3");
+
+            case HitReactionType.Knockdown:
+                animator.SetTrigger("Knockdown");
                 break;
+           
         }
     }
 }

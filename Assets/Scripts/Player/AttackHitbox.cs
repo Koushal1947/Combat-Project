@@ -10,7 +10,7 @@ public class AttackHitbox : MonoBehaviour
     [SerializeField] private EnemyReaction enemyReaction;
     [SerializeField] private HitStopController hitstopController;
 
-    
+     
 
     private void Awake()
     {
@@ -25,6 +25,9 @@ public class AttackHitbox : MonoBehaviour
         float knockback = playerCombat.GetCurrentKnockback();
         float hitstop = playerCombat.GetCurrentHitstop();
         int comboStep = playerCombat.GetCurrentComboStep();
+        bool causesKnockdown = playerCombat.CurrentAttackCausesKnockdown;
+        HitReactionType reactionType = playerCombat.GetCurrentReactionType();
+
 
         if (!other.CompareTag("Enemy"))
         {
@@ -49,7 +52,7 @@ public class AttackHitbox : MonoBehaviour
 
         if(enemyReaction != null)
         {
-            enemyReaction.PlayHitReaction(hitstun, knockback, transform.root, comboStep);
+            enemyReaction.PlayHitReaction(hitstun, knockback, transform.root, comboStep, causesKnockdown, reactionType);
         }
 
         hitstopController.PlayHitstop(hitstop);

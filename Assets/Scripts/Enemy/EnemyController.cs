@@ -155,7 +155,8 @@ public class EnemyController : MonoBehaviour
 
     void HandleKnockdown()
     {
-
+        animator.SetBool("walkForward", false);
+        animator.SetBool("walkBackward", false);
     }
 
     void HandleDead()
@@ -211,6 +212,7 @@ public class EnemyController : MonoBehaviour
         animator.ResetTrigger("Attack");
 
         currentState = EnemyState.Knockdown;
+
     }
 
     public void ExitKnockdown()

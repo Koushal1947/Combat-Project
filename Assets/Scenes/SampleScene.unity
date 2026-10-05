@@ -540,41 +540,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   animator: {fileID: 1989636931}
-  attackButton:
-    m_Name: Attack Button
+  lightAttackButton:
+    m_Name: Light Attack Button
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 0281650b-7778-4677-8f94-c1cb6fc52b14
+    m_Id: ba0fe981-7c04-44b6-aadb-0f9db7003fc8
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 2ee02398-9a64-4165-a315-3b82c229044f
+      m_Id: 38fd5fdd-4672-47d0-b38e-4920835b6a19
       m_Path: <Mouse>/leftButton
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Attack Button
+      m_Action: Light Attack Button
+      m_Flags: 0
+    m_Flags: 0
+    m_Priority: 0
+  heavyAttackButton:
+    m_Name: Heavy Attack Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 58f0c367-decb-4c3b-bb6d-89edea148925
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 08143abb-3617-474a-bc39-5d7cd15e7eea
+      m_Path: <Mouse>/rightButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Heavy Attack Button
       m_Flags: 0
     m_Flags: 0
     m_Priority: 0
   charController: {fileID: 397942855}
   playerMovement: {fileID: 397942852}
-  attack1Damage: 20
-  attack2Damage: 25
-  attack3Damage: 35
-  attack1Hitstun: 0.25
-  attack2Hitstun: 1
-  attack3Hitstun: 0.65
-  attack1Knockback: 0.3
-  attack2Knockback: 0.5
-  attack3Knockback: 3
-  attack1Hitstop: 0.03
-  attack2Hitstop: 0.04
-  attack3Hitstop: 0.07
-  attack1Movespeed: 1
-  attack2Movespeed: 2
-  attack3Movespeed: 3.5
+  light1Data:
+    damage: 20
+    hitstun: 0.15
+    knockback: 1
+    hitstop: 0.03
+    moveSpeed: 1.5
+    usesRootMotion: 0
+    causesKnockdown: 0
+    reactionType: 0
+  light2Data:
+    damage: 25
+    hitstun: 0.2
+    knockback: 2
+    hitstop: 0.04
+    moveSpeed: 2
+    usesRootMotion: 0
+    causesKnockdown: 0
+    reactionType: 1
+  light3Data:
+    damage: 35
+    hitstun: 0.35
+    knockback: 4
+    hitstop: 0.07
+    moveSpeed: 3.5
+    usesRootMotion: 0
+    causesKnockdown: 1
+    reactionType: 2
+  heavyData:
+    damage: 40
+    hitstun: 0.4
+    knockback: 7
+    hitstop: 0.08
+    moveSpeed: 0
+    usesRootMotion: 1
+    causesKnockdown: 1
+    reactionType: 2
 --- !u!114 &397942857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,15 +876,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8465839044456209044, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -2.347816
+      value: -2.3478246
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044456209044, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 6.9645443
+      value: 6.964561
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044456209044, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -98.870155
+      value: -98.87015
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044456209112, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -892,6 +931,10 @@ PrefabInstance:
       value: BladeMan
       objectReference: {fileID: 0}
     - target: {fileID: 8465839044463899990, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8465839044463899990, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: aa9ee0c6f4110ef4f9839574f909baab, type: 2}
@@ -912,6 +955,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8465839044456499000, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1989636932}
+    - targetCorrespondingSourceObject: {fileID: 8465839044456499000, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1989636933}
   m_SourcePrefab: {fileID: 100100000, guid: 2b04e2b41820d35498183028bc0a7c4e, type: 3}
 --- !u!1 &832575517
 GameObject:
@@ -1544,6 +1590,22 @@ MonoBehaviour:
   playerCombat: {fileID: 397942856}
   leftHitbox: {fileID: 1645534264}
   rightHitbox: {fileID: 911171028}
+--- !u!114 &1989636933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989636930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2493910b455fb7140bc50af3d9eb14cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRootMotion
+  playerCombat: {fileID: 397942856}
+  charController: {fileID: 397942855}
+  animator: {fileID: 1989636931}
+  playerRoot: {fileID: 397942851}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

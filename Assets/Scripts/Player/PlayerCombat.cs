@@ -1,40 +1,59 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
+
+    
+
+    [System.Serializable]
+    public class AttackData
+    {
+        public int damage;
+        public float hitstun;
+        public float knockback;
+        public float hitstop;
+        public float moveSpeed;
+
+        public bool usesRootMotion;
+        public bool causesKnockdown;
+
+        public HitReactionType reactionType;
+    }
+
+    
+
+    private enum Attacktype
+    {
+        None,
+        Light1,
+        Light2,
+        Light3,
+        Heavy
+
+    }
+
+    private Attacktype currentAttack = Attacktype.None; 
+
     [SerializeField] private Animator animator;
-    [SerializeField] private InputAction attackButton;
+    [SerializeField] private InputAction lightAttackButton;
+    [SerializeField] private InputAction heavyAttackButton;
     [SerializeField] private CharacterController charController;
     [SerializeField] private PlayerMovement playerMovement;
 
-    [Header("Attack")]
-    [SerializeField] private int attack1Damage = 20;
-    [SerializeField] private int attack2Damage = 25;
-    [SerializeField] private int attack3Damage = 35;
+    [SerializeField] private AttackData light1Data;
+    [SerializeField] private AttackData light2Data;
+    [SerializeField] private AttackData light3Data;
+    [SerializeField] private AttackData heavyData;
 
-    [Header("Hitstun")]
-    [SerializeField] private float attack1Hitstun = 0.15f;
-    [SerializeField] private float attack2Hitstun = 0.2f;
-    [SerializeField] private float attack3Hitstun = 0.35f;
-
-    [Header("Knockback")]
-    [SerializeField] private float attack1Knockback = 1f;
-    [SerializeField] private float attack2Knockback = 2f;
-    [SerializeField] private float attack3Knockback = 4f;
-
-    [Header("Hitstop")]
-    [SerializeField] private float attack1Hitstop = 0.03f;
-    [SerializeField] private float attack2Hitstop = 0.04f;
-    [SerializeField] private float attack3Hitstop = 0.07f;
-
-    [Header("AttackMovement")]
-    [SerializeField] private float attack1Movespeed = 1.5f;
-    [SerializeField] private float attack2Movespeed = 2f;
-    [SerializeField] private float attack3Movespeed = 3.5f;
 
     private int comboStep = 0;
+
+
+    public bool CurrentAttackUsesRotation => currentAttackData != null && currentAttackData.usesRootMotion;
+    public bool CurrentAttackCausesKnockdown => currentAttackData.causesKnockdown;
 
     public bool IsAttacking => isAttacking;
     public bool AttackMovementActive => attackMovementActive;
@@ -42,23 +61,25 @@ public class PlayerCombat : MonoBehaviour
     private bool canQueueNextAttack;
     private bool attackQueued;
     private bool attackMovementActive;
-    
 
+    private AttackData currentAttackData;
 
     void Start()
     {
-        attackButton.Enable();
+        lightAttackButton.Enable();
+        heavyAttackButton.Enable();
     }
 
     void Update()
     {
-        ProcessAttack();
+        ProcessLightAttack();
+        ProcessHeavyAttack();
     }
 
-    void ProcessAttack()
+    void ProcessLightAttack()
     {
 
-        if (!attackButton.WasPressedThisFrame())
+        if (!lightAttackButton.WasPressedThisFrame())
         {
             return;
         }
@@ -78,10 +99,41 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    void ProcessHeavyAttack()
+    {
+        if (!heavyAttackButton.WasPressedThisFrame())
+        {
+            return;
+        }
+
+        if (isAttacking)
+        {
+            return;
+        }
+
+        if (!charController.isGrounded)
+        {
+            return;
+        }
+
+
+        isAttacking = true;
+        currentAttack = Attacktype.Heavy;
+        currentAttackData = heavyData;
+
+        playerMovement.SetAttackDirection();
+
+        animator.SetTrigger("HeavyAttack");
+
+    }
+
     private void StartCombo()
     {
         isAttacking = true;
         comboStep = 1;
+
+        currentAttack = Attacktype.Light1;
+        currentAttackData = light1Data;
 
         playerMovement.SetAttackDirection();
 
@@ -92,11 +144,14 @@ public class PlayerCombat : MonoBehaviour
 
     public void AttackFinished()
     {
+
         isAttacking = false;
 
         comboStep = 0;
         canQueueNextAttack = false;
         attackQueued = false;
+
+        currentAttack = Attacktype.None;
 
         animator.SetTrigger("EndCombo");
     }
@@ -125,6 +180,19 @@ public class PlayerCombat : MonoBehaviour
     {
         comboStep++;
 
+        switch (comboStep)
+        {
+            case 2:
+                currentAttack = Attacktype.Light2;
+                currentAttackData = light2Data;
+                break;
+
+            case 3:
+                currentAttack = Attacktype.Light3;
+                currentAttackData = light3Data;
+                break;
+        }
+
         playerMovement.SetAttackDirection();
 
         animator.SetTrigger("NextAttack");
@@ -132,81 +200,33 @@ public class PlayerCombat : MonoBehaviour
 
     public int GetCurrentDamage()
     {
-        switch (comboStep)
-        {
-            case 1:
-                return attack1Damage;
-            case 2:
-                return attack2Damage;
-            case 3:
-                return attack3Damage;
-
-            default:
-                return 0;
-        }
+        return currentAttackData.damage;
 
     }
 
     public float GetCurrentHitstun()
     {
-        switch (comboStep)
-        {
-            case 1:
-                return attack1Hitstun;
-            case 2:
-                return attack2Hitstun;
-            case 3:
-                return attack3Hitstun;
-            default:
-                return 1.5f;
-
-        }
+        return currentAttackData.hitstun;
     }
 
     public float GetCurrentKnockback()
     {
-        switch (comboStep)
-        {
-            case 1:
-                return attack1Knockback;
-            case 2:
-                return attack2Knockback;
-            case 3:
-                return attack3Knockback;
-            default:
-                return 0;
-
-        }
+        return currentAttackData.knockback;
     }
 
     public float GetCurrentHitstop()
     {
-        switch (comboStep)
-        {
-            case 1:
-                return attack1Hitstop;
-            case 2:
-                return attack2Hitstop;
-            case 3:
-                return attack3Hitstop;
-            default:
-                return 0.03f;
-        }
+        return currentAttackData.hitstop;
     }
 
     public float GetCurrentMoveSpeed()
     {
-        switch (comboStep)
-        {
-            case 1:
-                return attack1Movespeed;
-            case 2:
-                return attack2Movespeed;
-            case 3:
-                return attack3Movespeed;
-            default:
-                return 1.5f;
-        }
+        return currentAttackData.moveSpeed;
+    }
+
+    public HitReactionType GetCurrentReactionType()
+    {
+        return currentAttackData.reactionType;
     }
     
     public int GetCurrentComboStep()
@@ -223,5 +243,7 @@ public class PlayerCombat : MonoBehaviour
     {
         attackMovementActive = false;
     }
+
+    
 
 }
